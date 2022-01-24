@@ -6,4 +6,4 @@
 
 
 # Git登録
-git remote add original git@github.com:shoyaaa45/cicd-prac-app.git
+git remote add origin git@github.com:shoyaaa45/cicd-prac-app.git
