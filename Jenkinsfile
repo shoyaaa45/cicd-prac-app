@@ -2,8 +2,8 @@ pipeline {
   agent any
   environment {
     DOCKERHUB_USER = "shoyaaa45"
-    BUILD_HOST = "root@192.168.43.245:10022"
-    PROD_HOST = "root@192.168.43.245:10023"
+    BUILD_HOST = "root@ec2-35-77-67-97.ap-northeast-1.compute.amazonaws.com"
+    //PROD_HOST = "root@192.168.43.245:10023"
     BUILD_TIMESTAMP = sh(script: "date +%Y%m%d-%H%M%S", returnStdout: true).trim()
   }
   stages {
@@ -39,15 +39,15 @@ pipeline {
         sh "docker -H ssh://${BUILD_HOST} push ${DOCKERHUB_USER}/dockerkvs_app:${BUILD_TIMESTAMP}"
       }
     }
-    stage('Deploy') {
-      steps {
-        sh "cat docker-compose.prod.yml"
-        sh "echo 'DOCKERHUB_USER=${DOCKERHUB_USER}' > .env"
-        sh "echo 'BUILD_TIMESTAMP=${BUILD_TIMESTAMP}' >> .env"
-        sh "cat .env"
-        sh "docker-compose -H ssh://${PROD_HOST} -f docker-compose.prod.yml up -d"
-        sh "docker-compose -H ssh://${PROD_HOST} -f docker-compose.prod.yml ps"
-      }
-    }
+    // stage('Deploy') {
+    //   steps {
+    //     sh "cat docker-compose.prod.yml"
+    //     sh "echo 'DOCKERHUB_USER=${DOCKERHUB_USER}' > .env"
+    //     sh "echo 'BUILD_TIMESTAMP=${BUILD_TIMESTAMP}' >> .env"
+    //     sh "cat .env"
+    //     sh "docker-compose -H ssh://${PROD_HOST} -f docker-compose.prod.yml up -d"
+    //     sh "docker-compose -H ssh://${PROD_HOST} -f docker-compose.prod.yml ps"
+    //   }
+    // }
   }
 }
