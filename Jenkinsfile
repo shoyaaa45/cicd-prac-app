@@ -45,8 +45,8 @@ pipeline {
         sh "echo 'DOCKERHUB_USER=${DOCKERHUB_USER}' > .env"
         sh "echo 'BUILD_TIMESTAMP=${BUILD_TIMESTAMP}' >> .env"
         sh "cat .env"
-        sh "docker-compose -H ssh://${PROD_HOST} -f docker-compose.build.yml up -d"
-        sh "docker-compose -H ssh://${PROD_HOST} -f docker-compose.build.yml ps"
+        sh "docker-compose -H ssh://${BUILD_HOST} -f docker-compose.build.yml up -d"
+        sh "docker-compose -H ssh://${BUILD_HOST} -f docker-compose.build.yml ps"
       }
     }
     // stage('Deploy') {
