@@ -39,6 +39,16 @@ pipeline {
         sh "docker -H ssh://${BUILD_HOST} push ${DOCKERHUB_USER}/dockerkvs_app:${BUILD_TIMESTAMP}"
       }
     }
+    stage('Deploy for build environment') {
+      steps {
+        sh "cat docker-compose.build.yml"
+        sh "echo 'DOCKERHUB_USER=${DOCKERHUB_USER}' > .env"
+        sh "echo 'BUILD_TIMESTAMP=${BUILD_TIMESTAMP}' >> .env"
+        sh "cat .env"
+        sh "docker-compose -H ssh://${PROD_HOST} -f docker-compose.build.yml up -d"
+        sh "docker-compose -H ssh://${PROD_HOST} -f docker-compose.build.yml ps"
+      }
+    }
     // stage('Deploy') {
     //   steps {
     //     sh "cat docker-compose.prod.yml"
